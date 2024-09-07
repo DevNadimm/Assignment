@@ -9,9 +9,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<int> itemCount = [1, 1, 1];
+  List<int> itemCount = [];
 
-  late int totalPrice;
+  @override
+  void initState() {
+    super.initState();
+    itemCount = List<int>.filled(tShirtModel.length, 1);
+  }
 
   onTapPlus(int index) {
     setState(() {
@@ -20,9 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   onTapMinus(int index) {
-    setState(() {
-      itemCount[index]--;
-    });
+    if (itemCount[index] > 1) {
+      setState(() {
+        itemCount[index]--;
+      });
+    }
   }
 
   @override
@@ -46,9 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 itemCount: tShirtModel.length,
                 itemBuilder: (context, index) {
-                  // setState(() {
-                  //   totalPrice += tShirtModel[index]['price'] * itemCount[index];
-                  // });
                   return Padding(
                     padding: const EdgeInsets.all(5),
                     child: Card(
@@ -110,13 +113,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                  const EdgeInsets.symmetric(vertical: 10),
                                   child: Row(
                                     children: [
                                       CircleAvatar(
                                         radius: 16,
                                         backgroundColor:
-                                            Colors.blueAccent.withOpacity(0.2),
+                                        Colors.blueAccent.withOpacity(0.2),
                                         child: IconButton(
                                           onPressed: () {
                                             onTapMinus(index);
@@ -139,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       CircleAvatar(
                                         radius: 16,
                                         backgroundColor:
-                                            Colors.blueAccent.withOpacity(0.2),
+                                        Colors.blueAccent.withOpacity(0.2),
                                         child: IconButton(
                                           onPressed: () {
                                             onTapPlus(index);
@@ -176,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             )
                           ],
@@ -187,9 +190,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            const Column(
+            Column(
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -200,16 +203,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      "Total amount:",
+                      '899\$',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red,
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        'CHECK OUT',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),
