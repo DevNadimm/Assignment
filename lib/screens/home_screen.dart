@@ -1,5 +1,6 @@
 import 'package:assignment/model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  double calculateTotalAmount() {
+    double total = 0;
+    for (int i = 0; i < tShirtModel.length; i++) {
+      total += tShirtModel[i]['price'] * itemCount[i];
+    }
+    return total;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(5),
                     child: Card(
                       child: Container(
+                        padding: const EdgeInsets.all(10),
                         height: 130,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -63,21 +73,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Row(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Container(
-                                height: double.infinity,
-                                width: 90,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      tShirtModel[index]['img'],
-                                    ),
-                                    fit: BoxFit.cover,
+                            Container(
+                              height: double.infinity,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    tShirtModel[index]['img'],
                                   ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
+                            ),
+                            const SizedBox(
+                              width: 10,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -113,13 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 10),
+                                      const EdgeInsets.symmetric(vertical: 10),
                                   child: Row(
                                     children: [
                                       CircleAvatar(
                                         radius: 16,
                                         backgroundColor:
-                                        Colors.blueAccent.withOpacity(0.2),
+                                            Colors.blueAccent.withOpacity(0.2),
                                         child: IconButton(
                                           onPressed: () {
                                             onTapMinus(index);
@@ -142,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       CircleAvatar(
                                         radius: 16,
                                         backgroundColor:
-                                        Colors.blueAccent.withOpacity(0.2),
+                                            Colors.blueAccent.withOpacity(0.2),
                                         child: IconButton(
                                           onPressed: () {
                                             onTapPlus(index);
@@ -162,22 +172,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.more_vert,
-                                    color: Colors.black54,
-                                  ),
+                                const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.black54,
                                 ),
                                 const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '${tShirtModel[index]['price'] * itemCount[index]}\$',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                Text(
+                                  '${tShirtModel[index]['price'] * itemCount[index]}\$',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
@@ -192,10 +196,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Column(
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Total amount:",
                       style: TextStyle(
                         fontSize: 18,
@@ -203,8 +207,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      '899\$',
-                      style: TextStyle(
+                      '${calculateTotalAmount()}\$',
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -217,7 +221,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Fluttertoast.showToast(
+                        msg: "Your checkout was successful!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.greenAccent,
+                        textColor: Colors.black,
+                        fontSize: 16.0,
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.red,
